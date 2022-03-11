@@ -1,0 +1,63 @@
+/*
+快速排序的基本思想：
+	通过一趟排序将待排记录分隔成独立的两部分，其中一部分记录的关键字均比另一部分的关键字小，
+	则可分别对这两部分记录继续进行排序，以达到整个序列有序。
+快速排序的算法描述：
+	快速排序使用分治法来把一个串（list）分为两个子串（sub-lists）。具体算法描述如下：
+	从数列中挑出一个元素，称为 “基准”（pivot）；
+	重新排序数列，所有元素比基准值小的摆放在基准前面，所有元素比基准值大的摆在基准的后面（相同的数可以到任一边）。
+	在这个分区退出之后，该基准就处于数列的中间位置。这个称为分区（partition）操作；
+	递归地（recursive）把小于基准值元素的子数列和大于基准值元素的子数列排序。
+
+最佳情况：T(n) = O(nlogn) 最差情况：T(n) = O(n2) 平均情况：T(n) = O(nlogn)
+*/
+
+#include"QuickSort.h"
+
+int partition(vector<int>& input_vector, size_t start, size_t end)
+{
+	swap(input_vector[start], input_vector[start + rand() % (end - start + 1)]);
+	int pivot = input_vector[start];
+	while (start < end)
+	{
+		while (start < end)
+		{
+			if (pivot < input_vector[end])
+				end--;
+			else
+			{
+				input_vector[start++] = input_vector[end];
+				break;
+			}
+		}
+		while (start < end)
+		{
+			if (input_vector[start] < pivot)
+				start++;
+			else
+			{
+				input_vector[end--] = input_vector[start];
+				break;
+			}
+		}
+	}
+	input_vector[start] = pivot;
+	return start;
+}
+vector<int> QuickSort(vector<int>& input_vetor, size_t start, size_t end)
+{
+	if (end - start < 1) //递归基
+	{
+		return input_vetor;
+	}
+	size_t mi = partition(input_vetor, start, end);
+	if (mi > start)
+	{
+		QuickSort(input_vetor, start, mi - 1);
+	}
+	if (mi < end)
+	{
+		QuickSort(input_vetor, mi, end);
+	}
+	return input_vetor;
+}
